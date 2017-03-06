@@ -1,6 +1,5 @@
-module Turbine exposing (Model, initModel, view, setLevel, setId)
+module Turbine exposing (Model, Msg, initModel, view, setLevel, setId, update)
 
-import Messages exposing (Msg(..))
 import Html exposing (Html, div, text, input, button)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes as H exposing (..)
@@ -14,6 +13,11 @@ type TurbineStatus
     | ActiveCooling
 
 
+type Msg
+    = SetLevel String
+    | ToggleEnabled
+
+
 type alias Model =
     { id : Int
     , outputEnabled : Bool
@@ -25,7 +29,7 @@ type alias Model =
 
 setLevel : String -> Model -> Model
 setLevel v t =
-    { t | targetLevel = String.toInt (Debug.log "" v) |> Result.withDefault 0 }
+    { t | targetLevel = String.toInt v |> Result.withDefault 0 }
 
 
 setId : Int -> Model -> Model
@@ -43,9 +47,19 @@ initModel =
     }
 
 
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        SetLevel levelStr ->
+            setLevel levelStr model
+
+        ToggleEnabled ->
+            { model | outputEnabled = not model.outputEnabled }
+
+
 view : Model -> Html Msg
 view t =
-    div [] [ text "Apa" ]
+    div [ H.id ("turbine-" ++ (toString t.id)) ] [ rpmSlider t, outputToggle t ]
 
 
 rpmSlider : Model -> Html Msg
@@ -55,6 +69,25 @@ rpmSlider t =
         , H.min "0"
         , H.max "2"
         , value <| toString t.targetLevel
-        , onInput (Messages.SetLevel t.id)
+        , onInput SetLevel
         ]
         []
+
+
+outputToggle : Model -> Html Msg
+outputToggle t =
+    input
+        [ type_ "button"
+        , class ("output-" ++ (enableString t))
+        , onClick ToggleEnabled
+        , value (enableString t)
+        ]
+        []
+
+
+enableString : Model -> String
+enableString t =
+    if t.outputEnabled then
+        "On"
+    else
+        "Off"
