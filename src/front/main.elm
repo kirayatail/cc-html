@@ -40,7 +40,7 @@ update msg model =
                     in
                         case result of
                             Ok t ->
-                                ( { model | turbines = t }, Cmd.none )
+                                ( (Debug.log "Model" { model | turbines = t }), Cmd.none )
 
                             Err _ ->
                                 ( model, Cmd.none )
@@ -94,8 +94,7 @@ turbineContainer model =
 
 wrappedTurbine : Turbine.Model -> Html Msg
 wrappedTurbine model =
-    div []
-        [ Html.map (TurbineMsg model.id) <| Turbine.view model ]
+    Html.map (TurbineMsg model.id) <| Turbine.view model
 
 
 main : Program Never Model Msg

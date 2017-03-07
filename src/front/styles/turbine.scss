@@ -1,0 +1,46 @@
+.turbinecontainer {
+  display: flex;
+
+  .turbine-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #aaa;
+  }
+  input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+
+  }
+  .rpm-slider {
+    
+  }
+
+  .output-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid #000;
+    margin: 10px;
+
+    &.output-On {
+      background-color: #29F731;
+      color: #000;
+    }
+
+    &.output-Off {
+      background-color: #BF360C;
+      color: #FFF;
+    }
+  }
+}

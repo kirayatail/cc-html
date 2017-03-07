@@ -59,13 +59,14 @@ update msg model =
 
 view : Model -> Html Msg
 view t =
-    div [ H.id ("turbine-" ++ (toString t.id)) ] [ rpmSlider t, outputToggle t ]
+    div [ H.id ("turbine-" ++ (toString t.id)), H.class "turbine-panel" ] [ rpmSlider t, outputToggle t ]
 
 
 rpmSlider : Model -> Html Msg
 rpmSlider t =
     input
         [ type_ "range"
+        , class "rpm-slider"
         , H.min "0"
         , H.max "2"
         , value <| toString t.targetLevel
@@ -78,7 +79,7 @@ outputToggle : Model -> Html Msg
 outputToggle t =
     input
         [ type_ "button"
-        , class ("output-" ++ (enableString t))
+        , class ("output-btn output-" ++ (enableString t))
         , onClick ToggleEnabled
         , value (enableString t)
         ]
