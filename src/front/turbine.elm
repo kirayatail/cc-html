@@ -1,4 +1,4 @@
-module Turbine exposing (Model, Msg, initModel, view, setLevel, setId, update)
+module Turbine exposing (Model, Msg, initModel, view, setTargetLevel, setId, update)
 
 import Html exposing (Html, div, text, input, button)
 import Html.Events exposing (onInput, onClick)
@@ -22,13 +22,14 @@ type alias Model =
     { id : Int
     , outputEnabled : Bool
     , targetLevel : Int
+    , level : Int
     , steamWarn : Bool
     , status : TurbineStatus
     }
 
 
-setLevel : String -> Model -> Model
-setLevel v t =
+setTargetLevel : String -> Model -> Model
+setTargetLevel v t =
     { t | targetLevel = String.toInt v |> Result.withDefault 0 }
 
 
@@ -42,6 +43,7 @@ initModel =
     { id = 0
     , outputEnabled = False
     , targetLevel = 0
+    , level = 0
     , steamWarn = False
     , status = Off
     }
@@ -51,7 +53,7 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         SetLevel levelStr ->
-            setLevel levelStr model
+            setTargetLevel levelStr model
 
         ToggleEnabled ->
             { model | outputEnabled = not model.outputEnabled }
@@ -59,7 +61,12 @@ update msg model =
 
 view : Model -> Html Msg
 view t =
-    div [ H.id ("turbine-" ++ (toString t.id)), H.class "turbine-panel" ] [ rpmSlider t, outputToggle t ]
+    div [ H.id ("turbine-" ++ (toString t.id)), H.class "turbine-panel" ] [ levelIndicator t, rpmSlider t, outputToggle t ]
+
+
+levelIndicator : Model -> Html Msg
+levelIndicator t =
+    div [] [ text ("Level: " ++ toString t.level) ]
 
 
 rpmSlider : Model -> Html Msg

@@ -1,10 +1,10 @@
-module ReactorCtrl exposing (main)
+port module ReactorCtrl exposing (main, return)
 
 import Reactor
 import Turbine
 import Html exposing (Html, h1, div, text, button)
 import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
+import Json.Decode exposing (..)
 
 
 type alias Model =
@@ -23,6 +23,9 @@ model =
 type Msg
     = TurbineMsg Int Turbine.Msg
     | ReactorMsg
+
+
+port return : (Value -> msg) -> Sub msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
