@@ -1,4 +1,4 @@
-port module ReactorCtrl exposing (main, return)
+port module ReactorCtrl exposing (main, receive)
 
 import Reactor
 import Turbine
@@ -25,7 +25,7 @@ type Msg
     | ReactorMsg
 
 
-port return : (Value -> msg) -> Sub msg
+port receive : (Value -> msg) -> Sub msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
