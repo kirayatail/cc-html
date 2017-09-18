@@ -1,12 +1,15 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http');
 var websocket = require('websocket').server;
 
 app.get('/', (req,res) => {
-    console.log('Requested /kkk')
-    return res.sendFile('index.html');
+    console.log('Requested /');
+    return res.sendFile('index.html', {root: __dirname});
 });
 
-var server = http.createServer(app);
+app.use(express.static('dist'));
 
-server.listen(6000);
+app.listen(3000, () => {
+  console.log('Listening to port 3000');
+})

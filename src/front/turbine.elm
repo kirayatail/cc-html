@@ -75,7 +75,7 @@ rpmSlider t =
         [ type_ "range"
         , class "rpm-slider"
         , H.min "0"
-        , H.max "2"
+        , H.max "3"
         , value <| toString t.targetLevel
         , onInput SetLevel
         ]
